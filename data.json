@@ -1,5 +1,5 @@
 {
-  "totalCash": 99.89,
+  "totalCash": 131.89,
 
   "transactions": [
     {"date": "2025-02-01", "desc": "Raffle Sales", "amount": 55},
@@ -12,5 +12,6 @@
     "total": 1400
   }
 }
+
 
 
