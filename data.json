@@ -6,10 +6,11 @@
     {"date": "2025-01-29", "desc": "Irish House Room Booking", "amount": -78.20},
     {"date": "2025-01-20", "desc": "Victor's Paper Sales", "amount": 88}
   ],
-
+  
   "pledges": {
     "collected": 0,
     "total": 1400
   }
 }
+
 
