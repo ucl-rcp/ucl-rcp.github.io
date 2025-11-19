@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UCL-RCP Finance Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    :root {
+        --bg: #f7f7f7;
+        --text: #333;
+        --card-bg: white;
+        --header-bg: #002855;
+        --header-text: #fff;
+        --shadow: rgba(0,0,0,0.1);
+        --progress-bg: #e0e0e0;
+        --progress-fill: #4CAF50;
+    }
+
+    body.dark {
+        --bg: #1e1e1e;
+        --text: #e0e0e0;
+        --card-bg: #2a2a2a;
+        --header-bg: #001a33;
+        --header-text: #eeeeee;
+        --shadow: rgba(255,255,255,0.1);
+        --progress-bg: #444;
+        --progress-fill: #66cc66;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+        transition: 0.3s;
+    }
+
+    header {
+        background: var(--header-bg);
+        color: var(--header-text);
+        padding: 20px;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Dark mode toggle */
+    .toggle-btn {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        background: #ccc;
+        border-radius: 15px;
+        width: 50px;
+        height: 24px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .toggle-ball {
+        background: white;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: relative;
+        top: 2px;
+        left: 2px;
+        transition: 0.3s;
+    }
+
+    body.dark .toggle-btn {
+        background: #555;
+    }
+
+    body.dark .toggle-ball {
+        transform: translateX(26px);
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: 30px auto;
+    }
+
+    .card {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 8px var(--shadow);
+        transition: 0.3s;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    .progress-bar-container {
+        background: var(--progress-bg);
+        border-radius: 10px;
+        height: 30px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: var(--progress-fill);
+        height: 100%;
+        width: 0%;
+        transition: width 1.2s ease-out;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table th, table td {
+        padding: 10px;
+        border-bottom: 1px solid #555;
+    }
+
+    table th {
+        background: #f0f0f0;
+        color: #000;
+    }
+
+    body.dark table th {
+        background: #333;
+        color: #fff;
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>UCL-RCP Finance Dashboard</h1>
+
+    <!-- Dark mode toggle -->
+    <div class="toggle-btn" id="themeToggle">
+        <div class="toggle-ball"></div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- TOTAL CASH -->
+    <div class="card">
+        <h2>Total Cash</h2>
+        <p style="font-size: 2em; font-weight: bold;" id="total-cash">£0</p>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="card">
+        <h2>Recent Credits / Debits</h2>
+        <table id="transactions-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount (£)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- PLEDGES -->
+    <div class="card">
+        <h2>Pledges Meter</h2>
+        <p>Collected: <span id="pledges-collected">0</span> /
+           <span id="pledges-total">0</span> (£)</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="pledge-bar"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// =========================================
+// DARK MODE SYSTEM
+// =========================================
+const toggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+    document.body.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+}
+
+toggle.onclick = () => {
+    const newTheme = document.body.classList.contains("dark") ? "light" : "dark";
+    applyTheme(newTheme);
+};
+
+// Load previous theme
+applyTheme(localStorage.getItem("theme") || "light");
+
+// =========================================
+// LOAD DATA FROM data.json
+// =========================================
+fetch("data.json")
+  .then(response => response.json())
+  .then(data => {
+      // Total cash
+      document.getElementById("total-cash").textContent =
+          "£" + data.totalCash.toFixed(2);
+
+      // Transactions
+      const tbody = document.querySelector("#transactions-table tbody");
+      tbody.innerHTML = ""; // clear existing rows
+
+      data.transactions.forEach(t => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+              <td>${t.date}</td>
+              <td>${t.desc}</td>
+              <td style="color:${t.amount < 0 ? 'red':'green'};">
+                  ${t.amount > 0 ? "+" : ""}${t.amount}
+              </td>
+          `;
+          tbody.appendChild(row);
+      });
+
+      // Pledges
+      document.getElementById("pledges-collected").textContent =
+          data.pledges.collected;
+      document.getElementById("pledges-total").textContent =
+          data.pledges.total;
+
+      // Progress bar animation
+      const pct = (data.pledges.collected / data.pledges.total) * 100;
+      document.getElementById("pledge-bar").style.width = pct + "%";
+  });
+</script>
+
+</body>
+</html>
