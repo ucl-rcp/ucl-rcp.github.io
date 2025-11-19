@@ -2,9 +2,9 @@
   "totalCash": 140.69,
 
   "transactions": [
-    {"date": "2025-02-01", "desc": "Raffle Sales", "amount": 55},
-    {"date": "2025-01-29", "desc": "Irish House Room Booking", "amount": -78.20},
-    {"date": "2025-01-20", "desc": "Victor's Paper Sales", "amount": 88}
+    {"date": "16 Nov '25", "desc": "Raffle Sales", "amount": 55},
+    {"date": "14 Nov '25", "desc": "Irish House Room Booking", "amount": -78.20},
+    {"date": "12 Nov '25", "desc": "Victor's Paper Sales", "amount": 88}
   ],
   
   "pledges": {
@@ -12,6 +12,7 @@
     "total": 1400
   }
 }
+
 
 
 
