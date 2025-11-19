@@ -196,13 +196,12 @@ toggle.onclick = () => {
     applyTheme(newTheme);
 };
 
-// Load previous theme
 applyTheme(localStorage.getItem("theme") || "light");
 
 // =========================================
-// LOAD DATA FROM data.json
+// LOAD DATA FROM data.json (cache-busting)
 // =========================================
-fetch("data.json")
+fetch("data.json?v=" + Date.now())
   .then(response => response.json())
   .then(data => {
       // Total cash
@@ -211,7 +210,7 @@ fetch("data.json")
 
       // Transactions
       const tbody = document.querySelector("#transactions-table tbody");
-      tbody.innerHTML = ""; // clear existing rows
+      tbody.innerHTML = "";
 
       data.transactions.forEach(t => {
           const row = document.createElement("tr");
