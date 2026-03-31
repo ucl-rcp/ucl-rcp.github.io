@@ -2,7 +2,7 @@
   "totalCash": 126.80,
 
   "transactions": [
-    {"date": "10 Mar '26", "desc": "Book purchases", "amount": 40.00},
+    {"date": "10 Mar '26", "desc": "Book purchases", "amount": -40.00},
     {"date": "09 Mar '26", "desc": "Rui Paper Sales", "amount": 41.97},
     {"date": "16 Nov '25", "desc": "Raffle Sales", "amount": 55},
     {"date": "14 Nov '25", "desc": "Irish House Room Booking", "amount": -78.20},
