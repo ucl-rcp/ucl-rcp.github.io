@@ -1,15 +1,17 @@
 {
-  "totalCash": 140.69,
+  "totalCash": 126.80,
 
   "transactions": [
+    {"date": "10 Mar '26", "desc": "Book purchases", "amount": 40.00},
+    {"date": "09 Mar '26", "desc": "Rui Paper Sales", "amount": 41.97},
     {"date": "16 Nov '25", "desc": "Raffle Sales", "amount": 55},
     {"date": "14 Nov '25", "desc": "Irish House Room Booking", "amount": -78.20},
     {"date": "12 Nov '25", "desc": "Victor's Paper Sales", "amount": 88}
   ],
   
   "pledges": {
-    "collected": 180,
-    "total": 1400
+    "collected": 0,
+    "total": 900
   }
 }
 
